@@ -5,8 +5,8 @@ var $ = require('jquery');
 var MemoListStore = Reflux.createStore({
   listenables: MemoListActions,
 
-  onInit() {
-    this.getAll().then(this.updateList.bind(this));
+  onInit(params) {
+    this.getAll(params).then(this.updateList.bind(this));
   },
 
   onAdd(memo) {
@@ -34,8 +34,13 @@ var MemoListStore = Reflux.createStore({
     this.trigger(list);
   },
 
-  getAll() {
-    return $.getJSON('/api/memos');
+  getAll(params) {
+    console.log(params);
+    return $.ajax({
+      url: '/api/memos',
+      dataType: 'json',
+      data: params
+    });
   },
 
   get(id) {

@@ -1,3 +1,3 @@
 module.exports =
-  mongoPath: 'mongodb://localhost/react-sample'
+  mongoPath: 'mongodb://localhost/reactsample'
   redisSecret: 'foo'

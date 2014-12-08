@@ -1,55 +1,37 @@
 /** @jsx React.DOM */
 var React = require('react');
-var AccountManager = require('./components/AccountManager');
-var Reflux = require('reflux');
+// var AccountManager = require('./components/AccountManager');
+// var Reflux = require('reflux');
 
 var IndexPage = require('./pages/IndexPage');
 var MemoPage = require('./pages/MemoPage');
 var MemoEditPage = require('./pages/MemoEditPage');
 var UserStore = require('./stores/UserStore');
+// var UserPage = require('./pages/UserPage');
 
-var Router = require('react-router');
-var { Route, DefaultRoute, RouteHandler, Link } = Router;
 
 require('../styles/style.css');
 
+var page = require('page');
+var qs = require('qs');
 
-var App = React.createClass({
-  displayName: 'App',
-  mixins: [Reflux.connect(UserStore, 'user')],
-
-  getInitialState() {
-    return {user: null};
-  },
-
-  componentDidMount() {
-    UserStore.init();
-  },
-
-  render() {
-    return (
-      <div>
-        <AccountManager user={this.state.user}/>
-        <Link to="new_memo" params={{memo: {}, user: this.state.user}}>new memo</Link>
-        <RouteHandler/>
-      </div>
-    );
-  }
+page('*', (ctx, next) => {
+  ctx.query = qs.parse(location.search.slice(1));
+  next();
 });
 
+var render = (Page, ctx) => {
+  React.render(React.createElement(Page, ctx), document.body);
+};
 
-var routes = (
-  <Route handler={App} name="app" path="/">
-    <DefaultRoute handler={IndexPage}/>
-    <Route name="new_memo" handler={MemoEditPage}/>
-    <Route name="memo" path="/memos/:id" handler={MemoPage}/>
-  </Route>
-);
+var setupRoutes = (routes) => {
+  Object.keys(routes).forEach(k => page(k, render.bind(null, routes[k])));
+};
 
-
-Router.run(routes, Router.HistoryLocation, (Handler) => {
-  React.render(<Handler/>, document.body);
+setupRoutes({
+  '/': IndexPage,
+  '/memos/:id': MemoPage,
+  '/newmemo': MemoEditPage
 });
 
-
-
+page();

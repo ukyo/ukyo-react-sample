@@ -5,21 +5,17 @@ var MemoStore = require('../stores/MemoStore');
 var MemoActions = require('../actions/MemoActions');
 var MemoEditor = require('../components/MemoEditor');
 var MemoViewer = require('../components/MemoViewer');
+var AppBase = require('../bases/AppBase');
+var UserStore = require('../stores/UserStore');
 
-var Router = require('react-router');
-var { Route, DefaultRoute, RouteHandler, Link } = Router;
 
 var MemoEditPage = React.createClass({
   displayName: 'MemoEditPage',
   mixins: [Reflux.connect(MemoStore, "memo")],
 
-  propTypes: {
-    user: React.PropTypes.object,
-    id: React.PropTypes.string
-  },
-
   getInitialState() {
     return {
+      user: UserStore.user,
       memo: {}
     };
   },
@@ -29,12 +25,17 @@ var MemoEditPage = React.createClass({
   },
 
   render() {
-    return (
-      <div>
-        <MemoEditor memo={this.state.memo} user={this.props.user}/>
-        <MemoViewer memo={this.state.memo}/>
-      </div>
-    );
+    return AppBase({
+      blocks: {
+        content: (
+          <div>
+            <MemoEditor memo={this.state.memo}/>
+            <MemoViewer memo={this.state.memo}/>
+          </div>
+        )
+      },
+      context: this.state
+    });
   }
 });
 

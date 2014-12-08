@@ -2,54 +2,54 @@ var Reflux = require('reflux');
 var MemoActions = require('../actions/MemoActions');
 var $ = require('jquery');
 
-var MemoListStore = Reflux.createStore({
-  listenables: MemoActions,
+var MemoAppConstants = require('../constants/MemoAppConstants');
+var MemoAppDispatcher = require('../dispatcher/MemoAppDispatcher');
+var EventEmitter = require('events').EventEmitter;
+var assign = require('object-assign');
 
-  onInit(id) {
-    this.get(id).then(this.updateMemo.bind(this));
+var ActionTypes = ChatConstants.ActionTypes;
+var CHANGE_EVENT = 'change';
+
+var _memos = {};
+
+var MemoStore = assign({}, EventEmitter.prototype, {
+  emitChange() {
+    this.emit(CHANGE_EVENT);
   },
 
-  onCreate(memo) {
-    $.ajax({
-      type: 'POST',
-      url: '/api/memos',
-      dataType: 'json',
-      data: memo
-    })
-    .then(this.updateMemo.bind(this));
+  addChangeListener(cb) {
+    this.on(CHANGE_EVENT, cb);
   },
 
-  onUpdate(memo) {
-    $.ajax({
-      type: 'PUT',
-      url: '/api/memos/${memo._id}',
-      dataType: 'json',
-      data: memo
-    })
-    .then(this.updateMemo.bind(this));
+  removeChangeListener(cb) {
+    this.removeChangeListener(CHANGE_EVENT, cb);
   },
 
-  onUpdateClient(memo) {
-    this.updateMemo(memo);
+  getMemo(id) {
+    _memos[id];
   },
 
-  onRemove(id) {
-    $.ajax({
-      type: 'DELETE',
-      url: `/api/memos/${id}`
-    })
-    .then(this.updateMemo.bind(this));
+  getUserMemos(user) {
+
   },
 
-  updateMemo(memo) {
-    this.memo = memo;
-    this.trigger(memo);
+  getPublicMemos() {
+
   },
 
-  get(id) {
-    return $.getJSON(`/api/memos/${id}`);
+  getMyMemos() {
+
   }
 });
+
+MemoStore.dispatchToken = MemoAppDispatcher.register(payload => {
+  var action = payload.action;
+
+  switch (action.type) {
+    case ActionTypes.CLICK_
+  }
+});
+
 
 
 module.exports = MemoListStore;

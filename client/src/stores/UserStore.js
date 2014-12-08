@@ -2,12 +2,22 @@ var Reflux = require('reflux');
 var UserActions = require('../actions/UserActions');
 var $ = require('jquery');
 
-
 var UserStore = Reflux.createStore({
   listenables: UserActions,
 
-  init() {
-    return $.getJSON('/api/users/me').then(this.updateUser.bind(this));
+  getUser() {
+    if(this.user) {
+      return $.Deferred().resolve(this.user);
+    } else {
+      return $.getJSON('/api/users/me').then(user => {
+        this.user = user;
+        return user;
+      });
+    }
+  },
+
+  onInit() {
+    this.getUser().then(this.updateUser.bind(this));
   },
 
   onSignup(user) {
@@ -31,14 +41,13 @@ var UserStore = Reflux.createStore({
   updateUser(user) {
     this.user = user;
     this.trigger(user);
+    return
   },
 
   onLogout() {
-    this.updateUser(null);
-  },
-
-  get() {
-    return this.user;
+    $.get('/api/users/logout').then(() => {
+      this.updateUser(null);      
+    });
   }
 
 });

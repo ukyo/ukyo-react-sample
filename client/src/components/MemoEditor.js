@@ -10,14 +10,12 @@ var MemoEditor = React.createClass({
   displayName: 'MemoEditor',
 
   propTypes: {
-    memo: React.PropTypes.object,
-    user: React.PropTypes.object
+    memo: React.PropTypes.object
   },
 
   handleSave(e) {
     e.preventDefault();
     var memo = this.props.memo;
-    memo.user = this.props.user;
     memo._id ?
       MemoActions.update(this.props.memo) :
       MemoActions.create(this.props.memo);

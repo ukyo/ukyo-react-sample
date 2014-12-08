@@ -1,34 +1,36 @@
 /** @jsx React.DOM */
 var React = require('react');
 var Reflux = require('reflux');
-var MemoStore = require('../stores/MemoStore');
+// var MemoStore = require('../stores/MemoStore');
 var MemoViewer = require('../components/MemoViewer');
-var MemoActions = require('../actions/MemoActions');
-
-var Router = require('react-router');
-var { Route, DefaultRoute, RouteHandler, Link } = Router;
+// var MemoActions = require('../actions/MemoActions');
+var AppBase = require('../bases/AppBase');
+var PageContextMixin = require('../mixins/PageContextMixin');
+var UserStore = require('../stores/UserStore');
 
 var MemoPage = React.createClass({
   displayName: 'MemoPage',
-  mixins: [Reflux.connect(MemoStore, "memo"), Router.Navigation, Router.State],
+  mixins: [PageContextMixin('MemoPage')],
 
   getInitialState() {
     return {
+      user: UserStore.user,
       memo: {}
     }
   },
 
-  componentDidMount() {
-    MemoActions.init(this.getParams().id);
-  },
-
   render() {
-    return (
-      <div>
-        <h2>{this.state.memo.title}</h2>
-        <MemoViewer memo={this.state.memo}/>
-      </div>
-    );
+    return AppBase({
+      blocks: {
+        content: (
+          <div>
+            <h2>{this.state.memo.title}</h2>
+            <MemoViewer memo={this.state.memo}/>
+          </div>
+        )
+      },
+      context: this.state
+    });
   }
 });
 

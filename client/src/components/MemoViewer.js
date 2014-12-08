@@ -1,9 +1,18 @@
 /** @jsx React.DOM */
 var React = require('react');
 var Reflux = require('reflux');
+var marked = require('marked');
 
-var Router = require('react-router');
-var { Route, DefaultRoute, RouteHandler, Link } = Router;
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: true,
+  smartLists: true,
+  smartypants: false
+});
 
 var MemoViewer = React.createClass({
   displayName: 'MemoViewer',
@@ -14,7 +23,7 @@ var MemoViewer = React.createClass({
 
   render() {
     return (
-      <div><pre>{this.props.memo.body}</pre></div>
+      <div dangerouslySetInnerHTML={{__html: marked(this.props.memo.body || '')}}></div>
     );
   }
 });

@@ -15,5 +15,5 @@ gulp.task 'serve', (cb) ->
       setTimeout ->
         $.livereload.changed()
       , 2000
-  gulp.watch './client/**/*.js', ->
+  gulp.watch './client/**/*.{js,css}', ->
     gulp.run 'build'

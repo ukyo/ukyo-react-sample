@@ -2,7 +2,7 @@
 var React = require('react');
 var Reflux = require('reflux');
 var UserActions = require('../actions/UserActions');
-
+var _ = require('lodash');
 
 var AccountManager = React.createClass({
   displayName: 'AccountManager',
@@ -42,7 +42,7 @@ var AccountManager = React.createClass({
   },
 
   render() {
-    if (this.props.user) {
+    if (!_.isEmpty(this.props.user)) {
       return (
         <div>
           {this.props.user.name} <button onClick={this.handleClickLogout}>Logout</button>

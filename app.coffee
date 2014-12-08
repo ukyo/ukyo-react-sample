@@ -13,7 +13,7 @@ index = require "./routes/index"
 api = require "./routes/api"
 
 mongoose = require 'mongoose'
-mongoose.connect 'mongodb://localhost/testsure'
+mongoose.connect config.mongoPath
 app = express()
 
 # view engine setup
