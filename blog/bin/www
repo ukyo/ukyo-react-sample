@@ -1,0 +1,9 @@
+require('node-jsx').install({harmony: true});
+var debug = require("debug")("react-sample");
+
+var app = require("../app");
+app.set("port", process.env.PORT || 3000);
+
+var server = app.listen(app.get("port"), function() {
+  return debug("Express server listening on port " + server.address().port);
+});

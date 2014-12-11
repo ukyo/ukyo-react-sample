@@ -1,0 +1,11 @@
+body {
+  font-size: 16px;
+}
+
+#main {
+  height: 300px;
+}
+
+#foo {
+  height: 30px;
+}
