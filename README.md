@@ -1,7 +1,4 @@
-ukyo-react-reflux-sample
+ukyo-react-sample
 ========================
 
-```
-npm install
-gulp
-```
+* blog
