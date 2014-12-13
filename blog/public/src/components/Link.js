@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 var React = require('react');
 var qs = require('qs');
+var _ = require('lodash');
 
 var Link = React.createClass({
   propTypes: {
@@ -8,9 +9,16 @@ var Link = React.createClass({
     query: React.PropTypes.object
   },
 
+  getDefaultProps() {
+    return {
+      to: '',
+      query: {}
+    };
+  },
+
   render() {
     var url = this.props.to;
-    if (this.props.query) {
+    if (!_.isEmpty(this.props.query)) {
       url += '?' + qs.stringify(this.props.query);
     }
 

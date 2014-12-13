@@ -3,16 +3,21 @@ var React = require('react');
 var MarkdownViewer = require('../components/MarkdownViewer');
 var Base = require('../layouts/base');
 var req = require('../common/req');
+var TagList = require('../components/TagList');
 var moment = require('moment');
 
 var Page = React.createClass({
   render() {
+    var entry = this.props.entry;
+
     return (
-        <div>
-          <h2>{this.props.entry.title}</h2>
-          <div>{moment(this.props.entry.date).format('YYYY-MM-DD')}</div>
-          <MarkdownViewer text={this.props.entry.body}/>
+      <div className="entry">
+        <h2 className="entry-title">{entry.title}</h2>
+        <TagList list={entry.tags}/>
+        <div className="entry-body">
+          <MarkdownViewer text={entry.body}/>
         </div>
+      </div>
     );
   }
 });

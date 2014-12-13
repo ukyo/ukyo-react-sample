@@ -2,7 +2,6 @@
 module.exports = {
   mongoPath: 'mongodb://localhost/reactsample',
   redisSecret: 'foo',
-  apipath: 'http://localhost:3000/api',
   username: 'foo',
   password: 'bar'
 };

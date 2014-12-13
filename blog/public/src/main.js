@@ -9,16 +9,17 @@ var Base = require('./layouts/base');
 var errorPage = require('./pages/error');
 var req = require('./common/req');
 var constants = require('../../constants');
+var {loadPageData} = require('../../common');
 
 
 page('*', (ctx, next) => {
-  ctx.query = qs.parse(location.search.slice(1));
+  ctx.query = ctx.querystring ? qs.parse(ctx.querystring) : {};
   next();
 });
 
 var Empty = React.createClass({
   render() {
-    return <div/>;
+    return null;
   }
 });
 
@@ -31,24 +32,27 @@ var Main = React.createClass({
   },
 
   setTitle(title) {
-    document.title = constants.Blog_TITlE + (title ? ` | ${title}` : '');
+    document.title = constants.BLOG_TITLE + (title ? ` | ${title}` : '');
   },
 
   setupRoute(handler, path) {
     page(path, (ctx, next) => {
-      var props = {}, promises;
-      promises = _.map(handler.resources, (resource, k) => {
-        return req(resource(ctx)).then(data => props[k] = data);
-      });
-      Promise.all(promises)
-      .then(() => {
+      loadPageData({
+        ctx: ctx,
+        handler: handler,
+        loadFn: req
+      })
+      .then(props => {
         this.setTitle(handler.title(props));
         this.setState({
           Page: handler.Page,
           props: props
         });
       })
-      .catch(next);
+      .catch(e => {
+        console.log(e, e.stack);
+        next();
+      });
     });
   },
 
@@ -64,7 +68,7 @@ var Main = React.createClass({
   },
 
   componentWillMount() {
-    _.forEach(require('./routes'), this.setupRoute.bind(this));
+    _.forEach(require('./routes'), this.setupRoute);
     this.setupErrorPage();
     page();
   },

@@ -6,8 +6,28 @@ var Entry = require('../../models/entry');
 var constants = require('../../constants');
 var router = express.Router();
 
-router.get('/', (req, res) => {
-  res.send(Entry.sync.find({}, {}, {sort: {created: -1}}));
+router.get('/', (req, res, next) => {
+  Entry.paginate(
+    req.query.page,
+    constants.PER_PAGE,
+    {},
+    {
+      title: 1,
+      slug: 1,
+      tags: 1,
+      created: 1
+    },
+    {
+      sort: {created: -1}
+    },
+    (err, result) => {
+      if (err) {
+        res.status(404);
+        next();
+      }
+      res.send(result);
+    }
+  );
 });
 
 router.get('/:slug', (req, res) => {

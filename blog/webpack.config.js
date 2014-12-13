@@ -3,6 +3,7 @@ module.exports = {
   entry: {
     main: './public/src/main.js'
   },
+  devtools: 'source-map',
   output: {
     filename: 'bundle.js'
   },

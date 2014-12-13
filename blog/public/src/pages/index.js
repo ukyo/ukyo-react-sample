@@ -7,7 +7,7 @@ var EntryList = require('../components/EntryList');
 var IndexPage = React.createClass({
   render() {
     return (
-      <EntryList list={this.props.entries}/>
+      <EntryList entries={this.props.entries}/>
     );
   }
 });
