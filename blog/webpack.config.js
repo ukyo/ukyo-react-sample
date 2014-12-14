@@ -5,12 +5,13 @@ module.exports = {
   },
   devtools: 'source-map',
   output: {
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: './public/'
   },
   module: {
     loaders: [
       {test: /\.css$/, loader: "style!css-loader"},
-      {test: /\.jsx?$/, loader: 'jsx-loader?harmony'},
+      {test: /\.jsx?$/, loaders: ['react-hot', 'jsx-loader?harmony']},
       {test: /\.coffee$/, loader: 'coffee-loader'}
     ]
   }
