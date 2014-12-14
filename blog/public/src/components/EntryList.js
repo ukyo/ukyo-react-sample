@@ -17,7 +17,7 @@ var EntryList = React.createClass({
         {entries.list.map(item => {
           var dateStr = moment(item.created).format('YYYY/MM/DD');
           return (
-            <div>
+            <div key={item._id}>
               <h2 className="entry-title"><a href={`/entry/${dateStr}/${item.slug}`}>{item.title}</a></h2>
               <TagList list={item.tags}/>
             </div>

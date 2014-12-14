@@ -11,7 +11,7 @@ var TagList = React.createClass({
       <div className="tags">
         {this.props.list.map(item => {
           return (
-            <a href={`/tags/${item}`}><i className="fa fa-tag"></i> {item}</a>
+            <a key={item} href={`/tags/${item}`}><i className="fa fa-tag"></i> {item}</a>
           )
         })}
       </div>
