@@ -33,7 +33,7 @@ var resources = {
 
 module.exports = {
   title(props) {
-    return props.entry.title;
+    return `entry | ${props.entry.title}`;
   },
   resources: resources,
   Page: Page

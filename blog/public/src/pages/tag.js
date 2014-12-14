@@ -26,7 +26,7 @@ var resources = {
 
 module.exports = {
   title(props) {
-    return `tag: ${props.ctx.params.tag}`;
+    return `tag | ${props.ctx.params.tag}`;
   },
   resources: resources,
   Page: TagPage
