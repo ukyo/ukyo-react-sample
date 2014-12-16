@@ -1,7 +1,10 @@
-ukyo-react-reflux-sample
-========================
+blog
+====
+
+* monogb is required
 
 ```
 npm install
+coffee init.coffee
 gulp
 ```
