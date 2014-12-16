@@ -26,7 +26,7 @@ var resources = {
   entry(ctx) {
     return {
       method: 'GET',
-      url: `/api/entries/${ctx.params.slug}`
+      url: `/entries/${ctx.params.slug}`
     };
   }
 };

@@ -1,17 +1,18 @@
 module.exports = {
   cache: true,
   entry: {
-    main: './public/src/main.js'
+    main: './public/src/main.jsx'
   },
-  devtools: 'source-map',
   output: {
-    filename: 'bundle.js',
-    publicPath: './public/'
+    filename: 'bundle.js'
+  },
+  resolve: {
+    extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"]
   },
   module: {
     loaders: [
       {test: /\.css$/, loader: "style!css-loader"},
-      {test: /\.jsx?$/, loaders: ['react-hot', 'jsx-loader?harmony']},
+      {test: /\.jsx?$/, loader: 'jsx-loader?harmony'},
       {test: /\.coffee$/, loader: 'coffee-loader'}
     ]
   }

@@ -16,7 +16,7 @@ var resources = {
   entries() {
     return {
       method: 'GET',
-      url: '/api/entries'
+      url: '/entries'
     }
   }
 };

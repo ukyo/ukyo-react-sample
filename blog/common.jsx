@@ -2,6 +2,7 @@ var {API_PATH} = require('./constants');
 var _ = require('lodash');
 var Promise = require('bluebird');
 var qs = require('qs');
+var constants = require('./constants');
 
 module.exports = {
   loadPageData(params) {
@@ -10,6 +11,7 @@ module.exports = {
 
     promises = _.map(handler.resources, (resource, k) => {
       var o = resource(ctx);
+      o.url = constants.API_PATH + o.url;
       if (o.method === 'GET' && !_.isEmpty(ctx.query)) {
         o.url += `?${qs.stringify(ctx.query)}`;
       }

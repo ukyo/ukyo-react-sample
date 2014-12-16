@@ -19,7 +19,7 @@ var resources = {
   entries(ctx) {
     return {
       method: 'GET',
-      url: `/api/tags/${ctx.params.tag}`
+      url: `/tags/${ctx.params.tag}`
     }
   }
 };

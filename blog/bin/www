@@ -1,4 +1,4 @@
-require('node-jsx').install({harmony: true});
+require('node-jsx').install({harmony: true, extension: '.jsx'});
 var debug = require("debug")("react-sample");
 
 var app = require("../app");

@@ -8,7 +8,6 @@ module.exports = o => {
 
   return new Promise((resolve, reject) => {
     var xhr = new XMLHttpRequest;
-    console.log(o.url);
     xhr.open(o.method, o.url);
     xhr.responseType = 'json';
     xhr.onloadend = () => {

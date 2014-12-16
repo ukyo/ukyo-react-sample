@@ -15,7 +15,7 @@ hello about.
 1. hoge
 1. fuga
 
-> texttext
+> text
 `;
 
 var Page = React.createClass({

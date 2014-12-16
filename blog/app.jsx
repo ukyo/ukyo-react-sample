@@ -7,8 +7,8 @@ var bodyParser = require("body-parser");
 var fibrous = require('fibrous');
 var basicAuth = require("basic-auth-connect");
 var config = require('config');
-var index = require("./routes/index");
-var api = require("./routes/api");
+var webpackDevMiddleware = require("webpack-dev-middleware");
+var webpack = require("webpack");
 
 var mongoose = require('mongoose');
 mongoose.connect(config.mongoPath);
@@ -16,6 +16,29 @@ mongoose.connect(config.mongoPath);
 var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
+
+
+if (app.get("env") === "development") {
+  app.use(webpackDevMiddleware(webpack({
+    entry: {
+      main: './public/src/main.jsx'
+    },
+    output: {
+      path: '/',
+      filename: 'bundle.js'
+    },
+    resolve: {
+      extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"]
+    },
+    module: {
+      loaders: [
+        {test: /\.css$/, loader: "style!css-loader"},
+        {test: /\.jsx?$/, loader: 'jsx-loader?harmony'},
+        {test: /\.coffee$/, loader: 'coffee-loader'}
+      ]
+    }
+  })));
+}
 app.use(favicon());
 app.use(logger("dev"));
 app.use(bodyParser.json());
@@ -25,11 +48,20 @@ app.use(cookieParser());
 app.use(express["static"](path.join(__dirname, "public")));
 app.use(fibrous.middleware);
 
+if (app.get("env") === "development") {
+  app.all('/*', function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3001');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    next();
+  });
+}
+
 ['post', 'put', 'delete'].map(method => {
   app[method]('/*', basicAuth(config.username, config.password));
 });
-app.use("/api", api);
-app.use("/", index);
+app.use("/api", require('./routes/api'));
+app.use("/", require('./routes/index'));
+app.use("/", require('./routes/react'));
 app.use(function(req, res, next) {
   var err;
   err = new Error("Not Found");
